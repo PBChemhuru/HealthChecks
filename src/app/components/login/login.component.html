@@ -1,0 +1,32 @@
+<div class="login-container">
+  <app-logo></app-logo>
+  <form (ngSubmit)="login()">
+    <div class="input-group">
+      <label for="username">Username</label>
+      <input
+        type="text"
+        id="username"
+        name="username"
+        [(ngModel)]="username"
+        placeholder="Enter your username"
+        required
+      />
+    </div>
+    <div class="input-group">
+      <label for="password">Password</label>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        [(ngModel)]="password"
+        placeholder="Enter your password"
+        required
+      />
+    </div>
+    <button type="submit" class="login-btn">Login</button>
+  </form>
+  <h2>User List</h2>
+  <div *ngFor="let user of users">
+    <div>{{ user.firstname }}</div>
+  </div>
+</div>
