@@ -7,3 +7,27 @@
     text-align: center;
     margin-top: 50px;
   }
+  .pagination-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .page-size-selector {
+    display: flex;
+    align-items: center;
+  }
+  
+  .page-size-selector label {
+    margin-right: 10px;
+  }
+  
+  button {
+    padding: 5px 15px;
+    margin: 0 10px;
+  }
+  
+  select {
+    padding: 5px;
+  }

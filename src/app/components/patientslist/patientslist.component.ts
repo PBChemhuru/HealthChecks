@@ -25,6 +25,7 @@ export class PatientslistComponent implements OnInit {
   pageSize: number = 10;
   totalPages: number = 0;
   searchTerm: string = '';
+  pageSizeOptions: number[] = [10, 25, 50, 100, 200, 500];
 
   constructor(private patientService: PatientService) {}
 
@@ -42,6 +43,15 @@ export class PatientslistComponent implements OnInit {
     return this.filteredPatients.slice(startIndex, endIndex);
   }
 
+  onPageSizeChange(event: Event) {
+    const selectElement = event.target as HTMLSelectElement; 
+    if (selectElement) {
+      this.pageSize = +selectElement.value; 
+      this.totalPages = Math.ceil(this.filteredPatients.length / this.pageSize);
+      this.currentPage = 1; 
+    }
+  }
+  
   nextPage() {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
@@ -55,18 +65,19 @@ export class PatientslistComponent implements OnInit {
   }
 
   onSearch(searchTerm: string) {
-    this.searchTerm = searchTerm; 
+    this.searchTerm = searchTerm;
 
     if (!searchTerm) {
       this.filteredPatients = this.patients;
-      this.filteredPatients = this.patients.filter(patient => 
-        patient.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        patient.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        patient.patientId.toString().includes(searchTerm)
+      this.filteredPatients = this.patients.filter(
+        (patient) =>
+          patient.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          patient.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          patient.patientId.toString().includes(searchTerm)
       );
     }
     this.totalPages = Math.ceil(this.filteredPatients.length / this.pageSize);
-    this.currentPage = 1; // Reset to the first page
+    this.currentPage = 1;
   }
 
   trackByPatient(index: number, patient: Patient): number {

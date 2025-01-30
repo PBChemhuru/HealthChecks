@@ -41,7 +41,6 @@ export class LoginComponent implements OnInit {
         if (response && response.token) {
           sessionStorage.setItem('jwtToken', response.token);
           this.message = 'Login successful!';
-          console.log('Login response:', response);
           this.router.navigate(['/home']);
         }
       },

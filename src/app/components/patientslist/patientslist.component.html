@@ -5,7 +5,18 @@
     <app-patientslist-item [patient]="patient"></app-patientslist-item>
   </div>
 
-  <div class="pagination">
+  <div class="pagination-controls">
+    <!-- Page Size Selector -->
+    <div class="page-size-selector">
+      <label for="pageSize">Records per page:</label>
+      <select id="pageSize" (change)="onPageSizeChange($event)">
+        <option *ngFor="let size of pageSizeOptions" [value]="size" [selected]="size === pageSize">
+          {{ size }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Pagination Buttons -->
     <button (click)="prevPage()" [disabled]="currentPage === 1">
       Previous
     </button>
