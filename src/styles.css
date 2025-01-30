@@ -1,35 +1,81 @@
 /* Global Styles (src/styles.css) */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #19A19E;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+  font-family: Arial, sans-serif;
+  background-color: #19A19E;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+}
+
+/* Main container */
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Align children at the top */
+  align-items: center;
+  height: 100%; /* Full height of the screen */
+  width: 100%; /* Full width of the screen */
+  padding: 20px;
+  background-color: #ffffff; /* White background for the content */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+  border-radius: 8px; /* Rounded corners */
+  overflow: auto; /* Add scrollbars if content overflows */
+  margin: 0 auto;
+  max-width: 1200px; /* Limit the width of the container */
+  box-sizing: border-box;
+  min-width: 300px; /* Minimum width */
+}
+
+/* Prevents flex items from squashing */
+.container > * {
+  flex-shrink: 0; /* Prevent squashing of items */
+}
+
+/* Button Styling */
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  padding: 10px 15px;
+  transition: background 0.3s ease-in-out;
+  background-color: #0B6FB8; /* Button background */
+  color: white;
+}
+
+/* Button hover effect */
+button:hover {
+  background-color: #0a5b99; /* Darker button hover color */
+}
+
+/* Utility Classes */
+.text-grey {
+  color: #54595F;
+}
+
+.text-green {
+  color: #61CE70;
+}
+
+.text-blue {
+  color: #0B6FB8;
+}
+
+/* Adjustments for responsiveness */
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
   }
-  
-  button {
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    padding: 10px 15px;
-    transition: background 0.3s ease-in-out;
+
+  app-patientslist-item {
+    padding: 12px;
   }
-  
-  /* Utility Classes */
-  .text-grey {
-    color: #54595F;
+
+  h1 {
+    font-size: 1.5rem;
   }
-  
-  .text-green {
-    color: #61CE70;
-  }
-  
-  .text-blue {
-    color: #0B6FB8;
-  }
-  
-  
+}

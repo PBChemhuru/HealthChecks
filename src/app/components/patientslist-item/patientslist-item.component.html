@@ -1,0 +1,16 @@
+<div class="patient-card">
+  <h3>{{ patient.firstName }}</h3>
+  <p><strong>Age:</strong> {{ calculateAge(patient.dob) }}</p>
+  <p><strong>Gender:</strong> {{ patient.gender }}</p>
+  <p><strong>PatientNumber:</strong> {{ patient.patientId }}</p>
+  <div class="patient-actions">
+    <!-- View Button -->
+    <button (click)="viewPatientDetails(patient.patientId)" class="view-btn">
+      <i class="fas fa-eye"></i> View
+    </button>
+    <!-- Delete Button -->
+    <button (click)="deletePatient(patient)" class="delete-btn">
+      <i class="fas fa-trash"></i> Delete
+    </button>
+  </div>
+</div>

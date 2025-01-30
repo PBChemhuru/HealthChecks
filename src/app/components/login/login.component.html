@@ -23,10 +23,9 @@
         required
       />
     </div>
+    <p *ngIf="message" style="margin: 10px; color: red;">
+      {{ message }}
+    </p>
     <button type="submit" class="login-btn">Login</button>
   </form>
-  <h2>User List</h2>
-  <div *ngFor="let user of users">
-    <div>{{ user.firstname }}</div>
-  </div>
 </div>

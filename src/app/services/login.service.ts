@@ -36,4 +36,41 @@ export class LoginService {
       })
     );
   }
+
+  isAuthenticated():boolean {
+    const token = sessionStorage.getItem('jwtToken');
+    if(!token) return false;
+    const tokenExpiration = this.getTokenExpiratonDate(token);
+    if(tokenExpiration && tokenExpiration< new Date())
+    {
+      this.logout();
+      return false;
+    }
+
+    return true;
+  }
+
+  getTokenExpiratonDate(token:string):Date | null {
+    const decoded = this.decodeToken(token);
+    if (!decoded || !decoded.expiration) return null;
+    const date = new Date(0);
+    date.setUTCSeconds(decoded.expiration);
+    return date;
+  }
+
+  decodeToken(token:string): any{
+    try
+    {
+      const payload = token.split('.')[1];
+      return JSON.parse(atob(payload));
+    }
+    catch (error)
+    {
+      return null;
+    }
+  }
+
+  logout(): void {
+    sessionStorage.removeItem('jwtToken');
+  }
 }
