@@ -1,0 +1,120 @@
+<div class="patient-form-container">
+  <h2>Add New Patient</h2>
+
+  <form [formGroup]="patientForm" (ngSubmit)="submitForm()">
+    
+    <mat-form-field appearance="fill">
+      <mat-label>First Name</mat-label>
+      <input matInput formControlName="firstName" />
+      <mat-error *ngIf="patientForm.controls['firstName'].hasError('required')">
+        First name is required.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Last Name</mat-label>
+      <input matInput formControlName="lastName" />
+      <mat-error *ngIf="patientForm.controls['lastName'].hasError('required')">
+        Last name is required.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Date of Birth</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="dob" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error *ngIf="patientForm.controls['dob'].hasError('required')">
+        Date of birth is required.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Gender</mat-label>
+      <mat-select formControlName="gender">
+        <mat-option value="Male">Male</mat-option>
+        <mat-option value="Female">Female</mat-option>
+      </mat-select>
+      <mat-error *ngIf="patientForm.controls['gender'].hasError('required')">
+        Gender is required.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" />
+      <mat-error *ngIf="patientForm.controls['email'].hasError('required')">
+        Email is required.
+      </mat-error>
+      <mat-error *ngIf="patientForm.controls['email'].hasError('email')">
+        Please enter a valid email.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Phone Number</mat-label>
+      <input matInput formControlName="phonenumber" />
+      <mat-error *ngIf="patientForm.controls['phonenumber'].hasError('required')">
+        Phone number is required.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Emergency Contact</mat-label>
+      <input matInput formControlName="emergencyContact" />
+      <mat-error *ngIf="patientForm.controls['emergencyContact'].hasError('required')">
+        Emergency contact is required.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Emergency Contact Info</mat-label>
+      <input matInput formControlName="emergencyContactInfo" />
+      <mat-error *ngIf="patientForm.controls['emergencyContactInfo'].hasError('required')">
+        Emergency contact info is required.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Height (CM)</mat-label>
+      <input matInput formControlName="heightCM" />
+      <mat-error *ngIf="patientForm.controls['heightCM'].hasError('required')">
+        Height is required.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Weight (KG)</mat-label>
+      <input matInput formControlName="weightKG" />
+      <mat-error *ngIf="patientForm.controls['weightKG'].hasError('required')">
+        Weight is required.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Chronic Conditions</mat-label>
+      <input matInput formControlName="chronicConditions" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Allergies</mat-label>
+      <input matInput formControlName="allergies" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Medications</mat-label>
+      <input matInput formControlName="medications" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Family History</mat-label>
+      <input matInput formControlName="familyHistory" />
+    </mat-form-field>
+
+    <div class="form-buttons">
+      <button mat-raised-button color="primary" type="submit" [disabled]="patientForm.invalid">
+        Add Patient
+      </button>
+    </div>
+  </form>
+</div>

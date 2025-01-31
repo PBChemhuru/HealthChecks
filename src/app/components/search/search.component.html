@@ -1,12 +1,7 @@
 <div class="search-container">
-    <form (ngSubmit)="onSearch()">
-        <input
-      type="text"
-      name="searchTerm"
-      [(ngModel)]="searchTerm"
-      id="searchTerm"
-      placeholder="Search by name or ID"
-    />
-    <button (click)="onSearch()">Search</button>
-    </form>
-  </div>
+  <mat-form-field appearance="outline">
+    <mat-label>Search by Name or ID</mat-label>
+    <input matInput [(ngModel)]="searchTerm" (keyup.enter)="onSearch()" />
+  </mat-form-field>
+  <button mat-raised-button color="primary" (click)="onSearch()">Search</button>
+</div>

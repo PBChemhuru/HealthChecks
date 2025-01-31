@@ -1,0 +1,44 @@
+body {
+  background-color: #19A19E; 
+}
+
+.form-container {
+  background-color: #ffffff; 
+  padding: 20px;
+  border-radius: 12px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  max-width: 600px;
+  margin: 50px auto; 
+  overflow: hidden; 
+}
+
+h2 {
+  text-align: center;
+  color: #19A19E; 
+}
+
+mat-form-field {
+  width: 100%; 
+  margin-bottom: 16px; 
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background-color: #19A19E; 
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #16b0a6; 
+}
+
+mat-datepicker {
+  width: 100%;
+}

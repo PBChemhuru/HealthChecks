@@ -1,0 +1,8 @@
+<div *ngIf="patient">
+    <h3>Recommendations</h3>
+    <div *ngFor="let item of recommendations">
+      <input type="checkbox" [(ngModel)]="item.checked" /> {{ item.text }}
+    </div>
+  
+    <button (click)="saveRecommendations()">Save Recommendations</button>
+  </div>

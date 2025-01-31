@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { NavbarComponent } from '../navbar/navbar.component';
+import { NavbarComponent } from '../../navbar/navbar.component';
 import { PatientslistItemComponent } from '../patientslist-item/patientslist-item.component';
-import { PatientService } from '../../services/patient.service';
+import { PatientService } from '../../../services/patient.service';
 import { CommonModule } from '@angular/common';
-import { SearchComponent } from '../search/search.component';
-import { Patient } from '../../model/Patient';
+import { SearchComponent } from '../../search/search.component';
+import { Patient } from '../../../model/Patient';
 
 @Component({
   selector: 'app-patientslist',
@@ -30,6 +30,10 @@ export class PatientslistComponent implements OnInit {
   constructor(private patientService: PatientService) {}
 
   ngOnInit(): void {
+    this.loadPatients();
+  }
+
+  loadPatients() {
     this.patientService.getPatients().subscribe((patients) => {
       this.patients = patients;
       this.filteredPatients = patients;
@@ -44,14 +48,14 @@ export class PatientslistComponent implements OnInit {
   }
 
   onPageSizeChange(event: Event) {
-    const selectElement = event.target as HTMLSelectElement; 
+    const selectElement = event.target as HTMLSelectElement;
     if (selectElement) {
-      this.pageSize = +selectElement.value; 
+      this.pageSize = +selectElement.value;
       this.totalPages = Math.ceil(this.filteredPatients.length / this.pageSize);
-      this.currentPage = 1; 
+      this.currentPage = 1;
     }
   }
-  
+
   nextPage() {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
@@ -65,19 +69,37 @@ export class PatientslistComponent implements OnInit {
   }
 
   onSearch(searchTerm: string) {
-    this.searchTerm = searchTerm;
+    this.searchTerm = searchTerm.trim().toLowerCase();
 
-    if (!searchTerm) {
+    if (!this.searchTerm) {
+      this.filteredPatients = [...this.patients];
+    } else {
       this.filteredPatients = this.patients;
       this.filteredPatients = this.patients.filter(
         (patient) =>
           patient.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
           patient.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          patient.patientId.toString().includes(searchTerm)
+          patient.patientId.toString().toLowerCase().includes(this.searchTerm)
       );
     }
     this.totalPages = Math.ceil(this.filteredPatients.length / this.pageSize);
     this.currentPage = 1;
+  }
+
+  onPatientDeleted(deletedPatientId: number) {
+    this.patients = this.patients.filter(
+      (p) => p.patientId !== deletedPatientId
+    );
+    this.filteredPatients = this.filteredPatients.filter(
+      (p) => p.patientId !== deletedPatientId
+    );
+
+    this.totalPages = Math.ceil(this.filteredPatients.length / this.pageSize);
+
+    // Ensure current page is within valid range after deletion
+    if (this.currentPage > this.totalPages) {
+      this.currentPage = Math.max(1, this.totalPages);
+    }
   }
 
   trackByPatient(index: number, patient: Patient): number {

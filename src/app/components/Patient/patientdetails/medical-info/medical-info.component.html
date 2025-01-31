@@ -1,0 +1,20 @@
+<div *ngIf="patient">
+  <h3>Medical Information</h3>
+  <button class="edit-button" (click)="openModal()">Edit</button>
+  <div>
+    <p><strong>First Name:</strong> {{ patient.firstName }}</p>
+    <p><strong>Last Name:</strong> {{ patient.lastName }}</p>
+    <p><strong>Date of Birth:</strong> {{ patient.dob | date }}</p>
+    <p><strong>Gender:</strong> {{ patient.gender }}</p>
+    <p><strong>Email:</strong> {{ patient.email }}</p>
+    <p><strong>Phone Number:</strong> {{ patient.phonenumber }}</p>
+    <p><strong>Emergency Contact:</strong> {{ patient.emergencyContact }}</p>
+    <p><strong>Height (cm):</strong> {{ patient.heightCM }}</p>
+    <p><strong>Weight (kg):</strong> {{ patient.weightKG }}</p>
+    <p><strong>BMI:</strong> {{ patient.bmi }}</p>
+    <p><strong>Chronic Conditions:</strong> {{ patient.chronicConditions }}</p>
+    <p><strong>Allergies:</strong> {{ patient.allergies }}</p>
+    <p><strong>Medications:</strong> {{ patient.medications }}</p>
+    <p><strong>Family History:</strong> {{ patient.familyHistory }}</p>
+  </div>
+</div>

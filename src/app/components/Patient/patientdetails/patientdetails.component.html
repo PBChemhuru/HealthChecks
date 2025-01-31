@@ -1,0 +1,14 @@
+<app-navbar></app-navbar>
+<div class="container">
+    <div class="tabs">
+        <button [class.active]="activeTab === 1" (click)="setActiveTab(1)">Medical Info</button>
+        <button [class.active]="activeTab === 2" (click)="setActiveTab(2)">Recommendations</button>
+        <button [class.active]="activeTab === 3" (click)="setActiveTab(3)">Last Visit</button>
+      </div>
+
+      <div class="tab-content">
+        <app-medical-info *ngIf="activeTab === 1" [patient]="patient"></app-medical-info>
+        <app-recommendation *ngIf="activeTab === 2" [patient]="patient"></app-recommendation>
+        <app-visit-history *ngIf="activeTab === 3"></app-visit-history>
+      </div>
+</div>

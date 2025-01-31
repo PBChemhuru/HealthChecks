@@ -2,7 +2,7 @@
 <app-search (search)="onSearch($event)"></app-search>
 <div class="container">
   <div *ngFor="let patient of getPaginatedPatients(); trackBy: trackByPatient">
-    <app-patientslist-item [patient]="patient"></app-patientslist-item>
+    <app-patientslist-item [patient]="patient" (patientDeleted)="onPatientDeleted($event)"></app-patientslist-item>
   </div>
 
   <div class="pagination-controls">

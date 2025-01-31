@@ -1,0 +1,106 @@
+<h2 mat-dialog-title>Edit Patient Information</h2>
+<mat-dialog-content>
+  <form (ngSubmit)="submitChanges()">
+    <mat-form-field class="full-width">
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+      <mat-label>First Name</mat-label>
+      <input
+        matInput
+        [(ngModel)]="patient.firstName"
+        name="firstName"
+        required
+      />
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Last Name</mat-label>
+      <input matInput [(ngModel)]="patient.lastName" name="lastName" required />
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Date of Birth</mat-label>
+      <input
+        matInput
+        type="date"
+        [(ngModel)]="patient.dob"
+        name="dob"
+        required
+      />
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Gender</mat-label>
+      <input matInput [(ngModel)]="patient.gender" name="gender" required />
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Email</mat-label>
+      <input matInput [(ngModel)]="patient.email" name="email" required />
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Phone Number</mat-label>
+      <input
+        matInput
+        [(ngModel)]="patient.phonenumber"
+        name="phoneNumber"
+        required
+      />
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Emergency Contact</mat-label>
+      <input
+        matInput
+        [(ngModel)]="patient.emergencyContact"
+        name="emergencyContact"
+        required
+      />
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Height (cm)</mat-label>
+      <input matInput [(ngModel)]="patient.heightCM" name="heightCM" required />
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Weight (kg)</mat-label>
+      <input matInput [(ngModel)]="patient.weightKG" name="weightKG" required />
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Chronic Conditions</mat-label>
+      <input
+        matInput
+        [(ngModel)]="patient.chronicConditions"
+        name="chronicConditions"
+      />
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Allergies</mat-label>
+      <input matInput [(ngModel)]="patient.allergies" name="allergies" />
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Medications</mat-label>
+      <input matInput [(ngModel)]="patient.medications" name="medications" />
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Family History</mat-label>
+      <input
+        matInput
+        [(ngModel)]="patient.familyHistory"
+        name="familyHistory"
+      />
+    </mat-form-field>
+
+    <div mat-dialog-actions>
+      <button mat-button (click)="onCancel()">Cancel</button>
+      <button mat-button color="primary" type="submit">Save Changes</button>
+    </div>
+  </form>
+</mat-dialog-content>

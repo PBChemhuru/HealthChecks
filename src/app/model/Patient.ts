@@ -5,7 +5,7 @@ export interface Patient {
     dob: Date;
     gender: string;
     email?: string;
-    phoneNumber?: string;
+    phonenumber?: string;
     emergencyContact: string;
     emergencyContactInfo: string;
     heightCM?: number;
@@ -15,6 +15,8 @@ export interface Patient {
     allergies?: string;
     medications?: string;
     familyHistory?: string;
+  
+    // Timestamps
     createdAt: Date;
     updatedAt: Date;
   }
