@@ -9,11 +9,6 @@ import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { Patient } from '../model/Patient';
 
-const httpOptions = {
-  headers: new HttpHeaders({
-    'Content-Type': 'application/json',
-  }),
-};
 @Injectable({
   providedIn: 'root',
 })

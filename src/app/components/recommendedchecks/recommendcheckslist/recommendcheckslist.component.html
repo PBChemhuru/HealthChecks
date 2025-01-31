@@ -1,0 +1,19 @@
+<app-navbar></app-navbar>
+<app-search></app-search>
+<div class="checklist-container">
+  <mat-toolbar>
+    <button mat-raised-button color="primary" (click)="openAddDialog()">
+      Add Recommended Check
+    </button>
+  </mat-toolbar>
+  <mat-list>
+    <mat-list-item *ngFor="let check of recommendedChecks">
+      <app-recommendcheckslist-items
+        [recommendedCheck]="check"
+        (edit)="openEditDialog(check)"
+        (delete)="deleteRecommendedCheck(check)"
+      >
+      </app-recommendcheckslist-items>
+    </mat-list-item>
+  </mat-list>
+</div>
