@@ -1,8 +1,9 @@
-import { Component, Inject } from '@angular/core';
+import {Component,} from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import {
   FormBuilder,
   FormGroup,
+  FormsModule,
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
@@ -16,11 +17,16 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 import { RecommendedchecksService } from '../../../services/recommendedchecks.service';
 import { HttpClient } from '@angular/common/http';
-import { RecommendcheckslistItemsComponent } from '../recommendcheckslist-items/recommendcheckslist-items.component';
 import { MatListModule } from '@angular/material/list';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { CommonModule } from '@angular/common';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
 
 @Component({
-  selector: 'app-add-edit-recommended-check-dialog',
+  selector: 'app-addrecommendedcheckdialog',
   standalone: true,
   imports: [
     MatDialogModule,
@@ -32,35 +38,33 @@ import { MatListModule } from '@angular/material/list';
     MatToolbarModule,
     MatCardModule,
     MatListModule,
+    CommonModule,
+    MatPaginatorModule,
+    MatTableModule,
+    MatSortModule,
+    FormsModule,
     ReactiveFormsModule,
   ],
-  templateUrl: './add-edit-recommended-check-dialog.component.html',
-  styleUrl: './add-edit-recommended-check-dialog.component.css',
+  templateUrl: './addrecommendedcheckdialog.component.html',
+  styleUrl: './addrecommendedcheckdialog.component.css',
 })
-export class AddEditRecommendedCheckDialogComponent {
-  recommendedCheckForm: FormGroup;
+export class AddrecommendedcheckdialogComponent {
+  form: FormGroup;
 
-  constructor(
-    public dialogRef: MatDialogRef<AddEditRecommendedCheckDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private fb: FormBuilder
-  ) {
-    this.recommendedCheckForm = this.fb.group({
-      CheckName: [data.recommendedCheck.name || '', Validators.required],
-      description: [
-        data.recommendedCheck.description || '',
-        Validators.required,
-      ],
+  constructor(private fb: FormBuilder,private dialogRef:MatDialogRef<AddrecommendedcheckdialogComponent>) {
+    this.form = this.fb.group({
+      checkName: ['',Validators.required],
+      description: ['',Validators.required],
     });
   }
 
-  onSave(): void {
-    if (this.recommendedCheckForm.valid) {
-      this.dialogRef.close(this.recommendedCheckForm.value);
-    }
+  closeDialog(): void {
+    this.dialogRef.close();
   }
 
-  onCancel(): void {
-    this.dialogRef.close();
+  submitForm(): void {
+    if (this.form.valid) {
+      this.dialogRef.close(this.form.value);
+    }
   }
 }

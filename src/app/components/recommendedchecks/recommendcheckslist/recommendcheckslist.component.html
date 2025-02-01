@@ -1,19 +1,47 @@
-<app-navbar></app-navbar>
-<app-search></app-search>
-<div class="checklist-container">
-  <mat-toolbar>
-    <button mat-raised-button color="primary" (click)="openAddDialog()">
-      Add Recommended Check
-    </button>
-  </mat-toolbar>
-  <mat-list>
-    <mat-list-item *ngFor="let check of recommendedChecks">
-      <app-recommendcheckslist-items
-        [recommendedCheck]="check"
-        (edit)="openEditDialog(check)"
-        (delete)="deleteRecommendedCheck(check)"
-      >
-      </app-recommendcheckslist-items>
-    </mat-list-item>
-  </mat-list>
-</div>
+<mat-toolbar color="primary">
+  <button mat-button (click)="openAddDialog()" style="background-color: white;color:#005cbb ;">Add User</button>
+  <span class="spacer"></span>
+  <mat-form-field appearance="fill">
+    <mat-label>Search</mat-label>
+    <input
+      matInput
+      (input)="applySearchFilter($event)"
+      placeholder="Search by check name or description"
+    />
+  </mat-form-field>
+</mat-toolbar>
+<mat-table #table [dataSource]="recommendedChecks" matSort class="mat-elevation-z8">
+  <!-- Define Columns -->
+  <ng-container matColumnDef="checkId">
+    <th mat-header-cell *matHeaderCellDef> ID </th>
+    <td mat-cell *matCellDef="let check"> {{ check.checkId }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="checkName">
+    <th mat-header-cell *matHeaderCellDef> Name </th>
+    <td mat-cell *matCellDef="let check"> {{ check.checkName }} </td>
+  </ng-container>
+  <ng-container matColumnDef="description">
+    <th mat-header-cell *matHeaderCellDef> Description </th>
+    <td mat-cell *matCellDef="let check"> {{ check.description }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef> Actions </th>
+    <td mat-cell *matCellDef="let check">
+      <button mat-icon-button color="primary" (click)="openEditDialog(check)">
+        <mat-icon style="color:#005cbb;">edit</mat-icon>
+      </button>
+      <button mat-icon-button color="warn" (click)="openDeleteDialog(check)">
+        <mat-icon style="color: red;">delete</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <!-- Header and Row Definitions -->
+  <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayColumns;"></tr>
+</mat-table>
+
+<mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" showFirstLastButtons></mat-paginator>
+

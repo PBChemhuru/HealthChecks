@@ -6,6 +6,7 @@ import { PatientslistComponent } from './components/Patient/patientslist/patient
 import { PatientformComponent } from './components/Patient/patientform/patientform.component';
 import { PatientdetailsComponent } from './components/Patient/patientdetails/patientdetails.component';
 import { RecommendcheckslistComponent } from './components/recommendedchecks/recommendcheckslist/recommendcheckslist.component';
+import { UserlistComponent } from './components/users/userlist/userlist.component';
 
 
 export const routes: Routes = [
@@ -15,6 +16,7 @@ export const routes: Routes = [
     { path: 'patient-list', component: PatientslistComponent,canActivate: [authGuard] },
     { path: 'patient-details/:id', component: PatientdetailsComponent,canActivate: [authGuard] },
     { path: 'recommendedCheck-list', component: RecommendcheckslistComponent,canActivate: [authGuard] },
+    { path: 'user-list', component: UserlistComponent,canActivate: [authGuard] },
     
   
 

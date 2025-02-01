@@ -1,108 +1,107 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild } from '@angular/core';
 import { NavbarComponent } from '../../navbar/navbar.component';
 import { PatientslistItemComponent } from '../patientslist-item/patientslist-item.component';
 import { PatientService } from '../../../services/patient.service';
 import { CommonModule } from '@angular/common';
 import { SearchComponent } from '../../search/search.component';
 import { Patient } from '../../../model/Patient';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatCardModule } from '@angular/material/card';
+import { MatListModule } from '@angular/material/list';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+import { PatientformComponent } from '../patientform/patientform.component';
+import { PatientdetailsComponent } from '../patientdetails/patientdetails.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-patientslist',
   standalone: true,
   imports: [
     NavbarComponent,
-    PatientslistItemComponent,
     CommonModule,
-    SearchComponent,
+    MatDialogModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatSnackBarModule,
+    MatToolbarModule,
+    MatCardModule,
+    MatListModule,
+    MatPaginatorModule,
+    MatTableModule,
+    MatSortModule,
   ],
   templateUrl: './patientslist.component.html',
   styleUrl: './patientslist.component.css',
 })
 export class PatientslistComponent implements OnInit {
-  patients: Patient[] = [];
-  filteredPatients: Patient[] = [];
-  currentPage: number = 1;
-  pageSize: number = 10;
-  totalPages: number = 0;
-  searchTerm: string = '';
-  pageSizeOptions: number[] = [10, 25, 50, 100, 200, 500];
+  patients = new MatTableDataSource<any>([])
+  displayedColumns :string[] = [
+    'patientId',
+    'firstName',
+    'lastName',
+    'dob',
+    'gender',
+    'email',
+    'phonenumber',
+    'emergencyContact',
+    'emergencyContactInfo',
+    'heightCM',
+    'weightKG',
+    'bmi',
+    'chronicConditions',
+    'allergies',
+    'medications',
+    'familyHistory',
+    'actions'
+  ];
+  searchKey: string = '';
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private patientService: PatientService) {}
+  constructor(private patientService: PatientService, private dialog: MatDialog,private snackBar: MatSnackBar,private router:Router) {}
 
   ngOnInit(): void {
     this.loadPatients();
   }
 
+  ngAfterViewInit(): void {
+
+    console.log(this.displayedColumns);
+    this.patients.paginator = this.paginator;
+  }
+
   loadPatients() {
-    this.patientService.getPatients().subscribe((patients) => {
-      this.patients = patients;
-      this.filteredPatients = patients;
-      this.totalPages = Math.ceil(this.filteredPatients.length / this.pageSize);
+    this.patientService.getPatients().subscribe({
+      next: (patient) => {
+        this.patients.data = patient;
+      },
+      error:(error)=>{
+        this.snackBar.open('Failed to load Patietns', 'Close', {
+          duration: 3000,
+        });
+        console.error('error getting user', error);
+      }
     });
   }
 
-  getPaginatedPatients() {
-    const startIndex = (this.currentPage - 1) * this.pageSize;
-    const endIndex = this.currentPage * this.pageSize;
-    return this.filteredPatients.slice(startIndex, endIndex);
+  applySearchFilter(event: Event):void{
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.searchKey = filterValue.trim().toLowerCase();
+    this.patients.filter = this.searchKey;
   }
 
-  onPageSizeChange(event: Event) {
-    const selectElement = event.target as HTMLSelectElement;
-    if (selectElement) {
-      this.pageSize = +selectElement.value;
-      this.totalPages = Math.ceil(this.filteredPatients.length / this.pageSize);
-      this.currentPage = 1;
-    }
-  }
-
-  nextPage() {
-    if (this.currentPage < this.totalPages) {
-      this.currentPage++;
-    }
-  }
-
-  prevPage() {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-    }
-  }
-
-  onSearch(searchTerm: string) {
-    this.searchTerm = searchTerm.trim().toLowerCase();
-
-    if (!this.searchTerm) {
-      this.filteredPatients = [...this.patients];
-    } else {
-      this.filteredPatients = this.patients;
-      this.filteredPatients = this.patients.filter(
-        (patient) =>
-          patient.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          patient.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          patient.patientId.toString().toLowerCase().includes(this.searchTerm)
-      );
-    }
-    this.totalPages = Math.ceil(this.filteredPatients.length / this.pageSize);
-    this.currentPage = 1;
-  }
-
-  onPatientDeleted(deletedPatientId: number) {
-    this.patients = this.patients.filter(
-      (p) => p.patientId !== deletedPatientId
-    );
-    this.filteredPatients = this.filteredPatients.filter(
-      (p) => p.patientId !== deletedPatientId
-    );
-
-    this.totalPages = Math.ceil(this.filteredPatients.length / this.pageSize);
-
-    // Ensure current page is within valid range after deletion
-    if (this.currentPage > this.totalPages) {
-      this.currentPage = Math.max(1, this.totalPages);
-    }
-  }
-
-  trackByPatient(index: number, patient: Patient): number {
-    return patient.patientId;
+  viewPatientDetails(patientId: string): void {
+    this.router.navigate([`/patient-details/${patientId}`]);
   }
 }

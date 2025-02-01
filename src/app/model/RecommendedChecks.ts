@@ -1,5 +1,5 @@
 export interface RecommendedChecks {
-  CheckId: number;  // Primary Key
+  checkId: number;  // Primary Key
   CheckName: string;
   Description: string;
     // Timestamps

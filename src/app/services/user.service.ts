@@ -1,4 +1,4 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import {
   HttpClient,
   HttpErrorResponse,
@@ -31,12 +31,12 @@ export class UserService {
      });
    }
  
-   createRecommendedChecks(users:Users): Observable<any>
+   createUser(users:Users): Observable<any>
    {
      return this.http.post<any>(`${this.apiUrl}/user/create`, users,{ headers: this.getAuthHeaders() });
    }
  
-   updateRecommendedCheck(id: Number, updateduser: Users): Observable<any> {
+   updateUser(id: Number, updateduser: Users): Observable<any> {
      const url = `${this.apiUrl}/user/update/${id}`;
      return this.http
        .put(url, updateduser, { headers: this.getAuthHeaders() })
@@ -55,7 +55,7 @@ export class UserService {
        );
    }
  
-   deletePatient(id: Number): Observable<any> {
+   deleteUser(id: Number): Observable<any> {
      const url = `${this.apiUrl}/user/${id}`;
      return this.http.delete(url, { headers: this.getAuthHeaders() }).pipe(
        catchError((error: HttpErrorResponse) => {

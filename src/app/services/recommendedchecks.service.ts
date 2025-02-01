@@ -32,11 +32,11 @@ export class RecommendedchecksService {
 
   createRecommendedChecks(recommendedchecks:RecommendedChecks): Observable<any>
   {
-    return this.http.post<any>(`${this.apiUrl}/recommendedCheck/create`, recommendedchecks,{ headers: this.getAuthHeaders() });
+    return this.http.post<any>(`${this.apiUrl}/recommendedChecks/create`, recommendedchecks,{ headers: this.getAuthHeaders() });
   }
 
   updateRecommendedCheck(CheckId: Number, updatedRecommendedCheck: RecommendedChecks): Observable<any> {
-    const url = `${this.apiUrl}/recommendedCheck/update/${CheckId}`;
+    const url = `${this.apiUrl}/recommendedChecks/update/${CheckId}`;
     return this.http
       .put(url, updatedRecommendedCheck, { headers: this.getAuthHeaders() })
       .pipe(
@@ -55,7 +55,7 @@ export class RecommendedchecksService {
   }
 
   deleteRecommendedCheck(CheckId: Number): Observable<any> {
-    const url = `${this.apiUrl}/recommendedCheck/${CheckId}`;
+    const url = `${this.apiUrl}/recommendedChecks/${CheckId}`;
     return this.http.delete(url, { headers: this.getAuthHeaders() }).pipe(
       catchError((error: HttpErrorResponse) => {
         if (error.status === 404) {
