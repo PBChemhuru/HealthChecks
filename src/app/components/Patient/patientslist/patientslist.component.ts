@@ -51,19 +51,8 @@ export class PatientslistComponent implements OnInit {
     'patientId',
     'firstName',
     'lastName',
-    'dob',
+    'age',
     'gender',
-    'email',
-    'phonenumber',
-    'emergencyContact',
-    'emergencyContactInfo',
-    'heightCM',
-    'weightKG',
-    'bmi',
-    'chronicConditions',
-    'allergies',
-    'medications',
-    'familyHistory',
     'actions'
   ];
   searchKey: string = '';
@@ -84,7 +73,10 @@ export class PatientslistComponent implements OnInit {
   loadPatients() {
     this.patientService.getPatients().subscribe({
       next: (patient) => {
-        this.patients.data = patient;
+        this.patients.data = patient.map((p: any) => ({
+          ...p,
+          age: this.calculateAge(p.dob),
+        }));
       },
       error:(error)=>{
         this.snackBar.open('Failed to load Patietns', 'Close', {
@@ -103,5 +95,12 @@ export class PatientslistComponent implements OnInit {
 
   viewPatientDetails(patientId: string): void {
     this.router.navigate([`/patient-details/${patientId}`]);
+  }
+
+  calculateAge(dob: string): number {
+    const birthDate = new Date(dob);
+    const ageDifMs = Date.now() - birthDate.getTime();
+    const ageDate = new Date(ageDifMs); 
+    return Math.abs(ageDate.getUTCFullYear() - 1970);
   }
 }

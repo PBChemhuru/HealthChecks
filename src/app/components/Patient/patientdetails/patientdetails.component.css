@@ -1,34 +1,117 @@
-.container {
-    background: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    text-align: center;
-    margin-top: 50px;
-  }
-  .tabs {
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 20px;
-  }
-  
-  .tabs button {
-    padding: 10px;
-    font-size: 16px;
-    cursor: pointer;
-    border: none;
-    background-color: #f1f1f1;
-    transition: background-color 0.3s;
-  }
-  
-  .tabs button.active {
-    background-color: #4CAF50;
-    color: white;
-  }
-  
-  .tab-content {
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
+/* General Styling */
+.mat-tab-group {
+  margin: 20px 0;
+}
+
+.mat-tab-label {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.mat-tab-body {
+  padding: 20px;
+}
+
+/* Styling for Medical Info */
+.medical-info {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.medical-info h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.medical-info p {
+  font-size: 16px;
+}
+
+.medical-info button {
+  width: 200px;
+  margin-top: 10px;
+}
+
+/* Styling for Recommended Checks */
+.recommended-checks {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.recommended-checks h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.recommended-checks .mat-form-field {
+  width: 250px;
+}
+
+.recommended-checks ul {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 10px;
+}
+
+.recommended-checks li {
+  font-size: 16px;
+  margin: 5px 0;
+}
+
+/* Styling for Visit History */
+.visit-history {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.visit-history h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.visit-history p {
+  font-size: 16px;
+}
+
+/* Button Styling */
+button {
+  margin-right: 10px;
+}
+
+/* Material Tab Styling */
+.mat-tab-group .mat-tab-header {
+  background-color: #f0f0f0;
+  border-radius: 4px;
+  padding: 10px;
+}
+
+.mat-tab-header-pagination {
+  display: none;
+}
+
+/* Material Form Field */
+.mat-form-field {
+  margin-top: 20px;
+}
+
+/* For the delete button */
+button[color="warn"] {
+  background-color: #f44336;
+  color: white;
+}
+
+button[color="primary"] {
+  background-color: #3f51b5;
+  color: white;
+}
+
+/* Add custom spacing to the content sections */
+.mat-tab-body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+

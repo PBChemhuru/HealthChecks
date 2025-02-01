@@ -1,14 +1,48 @@
-<app-navbar></app-navbar>
-<div class="container">
-    <div class="tabs">
-        <button [class.active]="activeTab === 1" (click)="setActiveTab(1)">Medical Info</button>
-        <button [class.active]="activeTab === 2" (click)="setActiveTab(2)">Recommendations</button>
-        <button [class.active]="activeTab === 3" (click)="setActiveTab(3)">Last Visit</button>
-      </div>
+<mat-tab-group>
+  <!-- Tab for Medical Info -->
+  <mat-tab label="Medical Info">
+    <div class="medical-info">
+      <h2>Medical Information</h2>
+      <div *ngIf="patientDetails">
+        <p><strong>Name:</strong> {{ patientDetails.firstName }}</p>
+        <p><strong>Age:</strong> {{ patientDetails.dob }}</p>
+        <p><strong>Gender:</strong> {{ patientDetails.gender }}</p>
+        <p><strong>Medical History:</strong> {{ patientDetails.familyHistory }}</p>
+        <p><strong>Allergies:</strong> {{ patientDetails.allergies }}</p>
 
-      <div class="tab-content">
-        <app-medical-info *ngIf="activeTab === 1" [patient]="patient"></app-medical-info>
-        <app-recommendation *ngIf="activeTab === 2" [patient]="patient"></app-recommendation>
-        <app-visit-history *ngIf="activeTab === 3"></app-visit-history>
+      <!-- Edit and Delete Buttons -->
+      <button mat-raised-button color="primary" (click)="openEditDialog()">Edit Patient</button>
+      <button mat-raised-button color="warn" (click)="deletePatient()">Delete Patient</button>
+    </div>
+    </div>
+  </mat-tab>
+
+  <!-- Tab for Recommended Checks -->
+  <mat-tab label="Recommended Checks">
+    <div class="recommended-checks">
+      <h2>Recommended Checks</h2>
+      <mat-form-field appearance="fill">
+        <mat-label>Filter by Status</mat-label>
+        <mat-select [(value)]="selectedCheckStatus" >
+          <mat-option value="pending">Not Done</mat-option>
+          <mat-option value="finished">Finished</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Recommended checks list will appear here -->
+      <div *ngIf="recommendedChecks.length">
+        <ul>
+          <li *ngFor="let check of recommendedChecks">{{ check.name }} - {{ check.status }}</li>
+        </ul>
       </div>
-</div>
+    </div>
+  </mat-tab>
+
+  <!-- Tab for Visit History -->
+  <mat-tab label="Visit History">
+    <div class="visit-history">
+      <h2>Visit History</h2>
+      <p>Details about the patient's visit history go here.</p>
+    </div>
+  </mat-tab>
+</mat-tab-group>
