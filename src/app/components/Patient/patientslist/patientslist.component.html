@@ -51,6 +51,9 @@
       <button mat-raised-button color="primary" (click)="viewPatientDetails(patient.patientId)">
         <mat-icon>visibility</mat-icon> View
       </button>
+      <button mat-icon-button color="warn" (click)="openDeleteDialog(patient)">
+        <mat-icon style="color: red;">delete</mat-icon>
+      </button>
     </td>
   </ng-container>
 

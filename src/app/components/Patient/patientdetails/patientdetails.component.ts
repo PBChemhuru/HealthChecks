@@ -15,12 +15,24 @@ import { MatListModule } from '@angular/material/list';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CommonModule } from '@angular/common';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { MatTabsModule } from '@angular/material/tabs';
+import { PatientchecksService } from '../../../services/patientchecks.service';
+import { PatientRecommendation } from '../../../model/PatientRecommendation';
+import {
+  FormsModule,
+  FormBuilder,
+  FormGroup,
+  FormArray,
+  FormControl,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { NgModule } from '@angular/core';
+import { AddpatientrecommendedcheckdialogComponent } from './addpatientrecommendedcheckdialog/addpatientrecommendedcheckdialog.component';
 
 @Component({
   selector: 'app-patient-details',
@@ -42,6 +54,9 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatSelectModule,
     MatOptionModule,
     MatTabsModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatCheckboxModule,
   ],
   templateUrl: './patientdetails.component.html',
   styleUrls: ['./patientdetails.component.css'],
@@ -49,56 +64,143 @@ import { MatTabsModule } from '@angular/material/tabs';
 export class PatientdetailsComponent implements OnInit {
   patientId!: number;
   patientDetails!: Patient;
-  recommendedChecks: any[] = []; // List to store recommended checks
-  selectedCheckStatus: string = 'pending'; // To filter checks by status
+  recommendedChecks: any[] = [];
+  selectedCheckStatus: string = 'pending';
+  patientsChecks: any[] = [];
+  filteredChecks: any[] = [];
+  checklistForm: FormGroup;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private patientService: PatientService,
-    private dialog: MatDialog
-  ) {}
-
-  ngOnInit(): void {
-    // Fetch patient ID from route
-    this.route.params.subscribe((params) => {
-      console.log(params)
-      this.patientId = +params['id'];
-      console.log(this.patientId)
-      this.getPatientDetails(this.patientId);
+    private dialog: MatDialog,
+    private patientCheckService: PatientchecksService,
+    private snackbar: MatSnackBar,
+    private fb: FormBuilder
+  ) {
+    this.checklistForm = this.fb.group({
+      checks: this.fb.array([]),
     });
   }
 
-  // Get the patient details
-  getPatientDetails(id:number): void {
-    
-    this.patientService
-      .getPatient(id)
-      .subscribe((data: Patient) => {
-        this.patientDetails = data;
-        console.log(this.patientDetails);
-      });
+  ngOnInit(): void {
+    this.route.params.subscribe((params) => {
+      this.patientId = +params['id'];
+      this.getPatientDetails(this.patientId);
+      this.getPatientchecks(this.patientId);
+    });
+
   }
-  // Open dialog to edit patient details
-  openEditDialog(): void {
+
+  get checks(): FormArray<FormControl> {
+    return this.checklistForm.get('checks') as FormArray<FormControl>;
+  }
+
+  getPatientchecks(id: number): void {
+    this.patientCheckService.getpatientsChecks(id).subscribe((data) => {
+      this.patientsChecks = data;
+      this.filterChecks();
+    });
+  }
+  filterChecks(): void {
+    if (this.selectedCheckStatus === 'pending') {
+      this.filteredChecks = this.patientsChecks.filter((check) => !check.completed);
+    } else if (this.selectedCheckStatus === 'finished') {
+      this.filteredChecks = this.patientsChecks.filter((check) => check.completed);
+    } else {
+      this.filteredChecks = this.patientsChecks;
+    }
+  
+ 
+    this.checks.clear();
+  
+  
+    this.filteredChecks.forEach((check) => {
+      this.checks.push(this.fb.control(check.completed));  
+    });
+  }
+
+  populateChecks(): void {
+    console.log(this.patientsChecks);
+    this.checks.clear();
+    this.patientsChecks.forEach((check) => {
+      this.checks.push(this.fb.control(check.completed));
+    });
+  }
+  onStatusChange(status: string): void {
+    this.selectedCheckStatus = status;
+    this.filterChecks();
+  }
+
+  submitChecklist(): void {
+    console.log(this.checklistForm.value);
+    const updatedChecks = this.filteredChecks.map((check, index) => ({
+      ...check,
+      completed: this.checklistForm.value.checks[index],  
+    }));
+
+    this.patientCheckService.updateCheckStatuses(updatedChecks).subscribe({
+      next: (response) => {
+        console.log('Checklist updated:', response);
+        console.log(updatedChecks);
+        this.snackbar.open('Checklist updated', 'Close', {
+          duration: 3000,
+        });
+        this.getPatientchecks(this.patientId);
+      },
+      error: (error) => {
+        console.error('Error updating checklist:', error);
+        this.snackbar.open('Error updating checklist:' + error, 'Close', {
+          duration: 3000,
+        });
+      },
+    });
+  }
+
+  getPatientDetails(id: number): void {
+    this.patientService.getPatient(id).subscribe((data: Patient) => {
+      this.patientDetails = data;
+      console.log(this.patientDetails);
+    });
+  }
+
+  openEditDialog(patientinfo: any): void {
     const dialogRef = this.dialog.open(EditPatientModalComponent, {
-      data: { patient: this.patientDetails },
+      data: patientinfo,
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.getPatientDetails(result); // Refresh patient details after edit
+        this.getPatientDetails(result.patientId);
       }
     });
   }
 
-  // Delete the patient
   deletePatient(): void {
     if (confirm('Are you sure you want to delete this patient?')) {
       this.patientService.deletePatient(this.patientId).subscribe(() => {
         alert('Patient deleted successfully!');
-        this.router.navigate(['/patients']); // Redirect to patients list after deletion
+        this.router.navigate(['/patients']);
       });
     }
   }
+
+  OpenAddDialog(patientinfo: any): void {
+   
+    const dialogRef = this.dialog.open(AddpatientrecommendedcheckdialogComponent,{
+      width:"500px",
+      data: patientinfo,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if(result)
+      {
+        this.getPatientchecks(result.patientId);
+      }
+    });
+  }
+
+  addpatientcheck(dwad: any){}
+  
 }

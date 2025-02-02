@@ -1,0 +1,30 @@
+<h2 mat-dialog-title>Add Checks</h2>
+<mat-dialog-content>
+  <form [formGroup]="addCheckForm">
+    <mat-form-field appearance="fill">
+      <mat-label>Patient ID</mat-label>
+      <input matInput [value]="patientId" readonly />
+    </mat-form-field>
+
+    <div formArrayName="checks">
+      <div *ngFor="let check of checks.controls; let i = index" [formGroupName]="i">
+        <mat-form-field appearance="fill">
+            <mat-label>Select a Recommended Check</mat-label>
+            <mat-select formControlName="checkId">
+              <mat-option *ngFor="let check of recommendedChecks" [value]="check.checkId">
+                {{ check.checkName }} 
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+        <button mat-icon-button (click)="removeCheck(i)" *ngIf="checks.length > 1">
+          <mat-icon>remove_circle</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <button mat-raised-button color="primary" (click)="addCheck()">Add Another Check</button>
+    
+    <button mat-raised-button color="accent" (click)="submit()">Submit</button>
+  </form>
+</mat-dialog-content>

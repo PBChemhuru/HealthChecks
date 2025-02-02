@@ -25,13 +25,13 @@ export class PatientchecksService {
     });
   }
 
-  getpatientsChecks(id: Number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/get_PatientChecks/${id}`, {
+  getpatientsChecks(id: Number): Observable<PatientRecommendation[]> {
+    return this.http.get<PatientRecommendation[]>(`${this.apiUrl}/get_PatientChecks/${id}`, {
       headers: this.getAuthHeaders(),
     });
   }
 
-  createpatientsCheck(newPatientsCheck: PatientRecommendation): Observable<any> {
+  createpatientsCheck(newPatientsCheck: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/assignCheck`, newPatientsCheck, {
       headers: this.getAuthHeaders(),
     });

@@ -1,0 +1,9 @@
+<h1 mat-dialog-title>Delete User</h1>
+<div mat-dialog-content>
+  <p>Are you sure you want to delete the check: <strong>{{ data.firstname }} {{ data.lastname }}</strong>?</p>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="closeDialog()">Cancel</button>
+  <button mat-button color="warn" (click)="confirmDialog()">Delete</button>
+</div>
+

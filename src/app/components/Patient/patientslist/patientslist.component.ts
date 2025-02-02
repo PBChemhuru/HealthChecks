@@ -1,4 +1,4 @@
-import { Component, OnInit,ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NavbarComponent } from '../../navbar/navbar.component';
 import { PatientslistItemComponent } from '../patientslist-item/patientslist-item.component';
 import { PatientService } from '../../../services/patient.service';
@@ -22,6 +22,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { PatientformComponent } from '../patientform/patientform.component';
 import { PatientdetailsComponent } from '../patientdetails/patientdetails.component';
 import { Router } from '@angular/router';
+import { DeletePatientDialogComponent } from '../delete-patient-dialog/delete-patient-dialog.component';
 
 @Component({
   selector: 'app-patientslist',
@@ -46,26 +47,30 @@ import { Router } from '@angular/router';
   styleUrl: './patientslist.component.css',
 })
 export class PatientslistComponent implements OnInit {
-  patients = new MatTableDataSource<any>([])
-  displayedColumns :string[] = [
+  patients = new MatTableDataSource<any>([]);
+  displayedColumns: string[] = [
     'patientId',
     'firstName',
     'lastName',
     'age',
     'gender',
-    'actions'
+    'actions',
   ];
   searchKey: string = '';
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private patientService: PatientService, private dialog: MatDialog,private snackBar: MatSnackBar,private router:Router) {}
+  constructor(
+    private patientService: PatientService,
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.loadPatients();
   }
 
   ngAfterViewInit(): void {
-
     console.log(this.displayedColumns);
     this.patients.paginator = this.paginator;
   }
@@ -78,16 +83,16 @@ export class PatientslistComponent implements OnInit {
           age: this.calculateAge(p.dob),
         }));
       },
-      error:(error)=>{
+      error: (error) => {
         this.snackBar.open('Failed to load Patietns', 'Close', {
           duration: 3000,
         });
         console.error('error getting user', error);
-      }
+      },
     });
   }
 
-  applySearchFilter(event: Event):void{
+  applySearchFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;
     this.searchKey = filterValue.trim().toLowerCase();
     this.patients.filter = this.searchKey;
@@ -97,10 +102,36 @@ export class PatientslistComponent implements OnInit {
     this.router.navigate([`/patient-details/${patientId}`]);
   }
 
+  openDeleteDialog(item: any): void {
+    const dialogRef = this.dialog.open(DeletePatientDialogComponent, {
+      width: '500px',
+      data: item,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.deletePatient(item.patientId);
+      }
+    });
+  }
+
+  deletePatient(patient: any): void {
+    console.log(patient);
+    this.patientService.deletePatient(patient).subscribe({
+      next: (response) => {
+        this.loadPatients();
+        console.log('User deleted successfully:', response);
+      },
+      error: (error) => {
+        console.log('errror while delete user');
+      },
+    });
+  }
+
   calculateAge(dob: string): number {
     const birthDate = new Date(dob);
     const ageDifMs = Date.now() - birthDate.getTime();
-    const ageDate = new Date(ageDifMs); 
+    const ageDate = new Date(ageDifMs);
     return Math.abs(ageDate.getUTCFullYear() - 1970);
   }
 }

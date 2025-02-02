@@ -115,3 +115,6 @@ button[color="primary"] {
   gap: 20px;
 }
 
+mat-list-item {
+  margin-bottom: 8px;
+}

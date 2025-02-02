@@ -4,45 +4,50 @@
     <div class="medical-info">
       <h2>Medical Information</h2>
       <div *ngIf="patientDetails">
-        <p><strong>Name:</strong> {{ patientDetails.firstName }}</p>
-        <p><strong>Age:</strong> {{ patientDetails.dob }}</p>
+        <p><strong>First Name:</strong> {{ patientDetails.firstName }}</p>
+        <p><strong>Last Name:</strong> {{ patientDetails.lastName }}</p>
+        <p><strong>DOB:</strong> {{ patientDetails.dob }}</p>
         <p><strong>Gender:</strong> {{ patientDetails.gender }}</p>
-        <p><strong>Medical History:</strong> {{ patientDetails.familyHistory }}</p>
+        <p><strong>Email:</strong> {{ patientDetails.email }}</p>
+        <p><strong>Phone Number:</strong> {{ patientDetails.phonenumber }}</p>
+        <p><strong>Emergency Contact:</strong> {{ patientDetails.emergencyContact }}</p>
+        <p><strong>Emergency Contact Info:</strong> {{ patientDetails.emergencyContactInfo }}</p>
+        <p><strong>HeightCM:</strong> {{ patientDetails.heightCM }}</p>
+        <p><strong>WeightKG:</strong> {{ patientDetails.weightKG }}</p>
+        <p><strong>BMI:</strong> {{ patientDetails.bmi }}</p>
+        <p><strong>Chronic Conditions:</strong> {{ patientDetails.chronicConditions }}</p>
+        <p><strong>Family History:</strong> {{ patientDetails.familyHistory }}</p>
         <p><strong>Allergies:</strong> {{ patientDetails.allergies }}</p>
-
-      <!-- Edit and Delete Buttons -->
-      <button mat-raised-button color="primary" (click)="openEditDialog()">Edit Patient</button>
-      <button mat-raised-button color="warn" (click)="deletePatient()">Delete Patient</button>
-    </div>
+        <p><strong>Medications:</strong> {{ patientDetails.medications }}</p>
+        <button mat-raised-button color="primary" (click)="openEditDialog(patientDetails)">Edit Patient</button>
+      </div>
     </div>
   </mat-tab>
 
   <!-- Tab for Recommended Checks -->
   <mat-tab label="Recommended Checks">
     <div class="recommended-checks">
-      <h2>Recommended Checks</h2>
+      <h2>Recommended Checks</h2>  <button mat-raised-button style="background-color: green;color:white;width:150px"(click)="OpenAddDialog(patientDetails.patientId)">Add Check</button>
+      
       <mat-form-field appearance="fill">
         <mat-label>Filter by Status</mat-label>
-        <mat-select [(value)]="selectedCheckStatus" >
+        <mat-select [(value)]="selectedCheckStatus" (selectionChange)="onStatusChange($event.value)">
           <mat-option value="pending">Not Done</mat-option>
           <mat-option value="finished">Finished</mat-option>
+          <mat-option value="all">All</mat-option>
         </mat-select>
       </mat-form-field>
-
-      <!-- Recommended checks list will appear here -->
-      <div *ngIf="recommendedChecks.length">
-        <ul>
-          <li *ngFor="let check of recommendedChecks">{{ check.name }} - {{ check.status }}</li>
-        </ul>
-      </div>
-    </div>
-  </mat-tab>
-
-  <!-- Tab for Visit History -->
-  <mat-tab label="Visit History">
-    <div class="visit-history">
-      <h2>Visit History</h2>
-      <p>Details about the patient's visit history go here.</p>
+      
+      <mat-list *ngIf="filteredChecks.length">
+        <mat-list-item *ngFor="let check of filteredChecks; let i = index">
+          <mat-checkbox [formControl]="checks.at(i)">
+            {{ check.checkName }}
+          </mat-checkbox>
+          {{check.updatedAt | date}}
+        </mat-list-item>
+      </mat-list>
+      
+      <button mat-raised-button color="primary" (click)="submitChecklist()">Submit</button>
     </div>
   </mat-tab>
 </mat-tab-group>
