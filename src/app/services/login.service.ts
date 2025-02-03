@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 
 @Injectable({
@@ -25,7 +25,7 @@ export class LoginService {
       username: username,
       password: password
     };
-    return this.http.post(`${this.apiUrl}/login`, loginPayload, {
+    return this.http.post(`${this.apiUrl}/api/auth/login`, loginPayload, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       })
@@ -33,6 +33,11 @@ export class LoginService {
       catchError(error => {
         console.error('Login error:', error);
         return throwError(() => new Error('Login failed'));
+      }),
+      tap(response =>{
+        console.log(response);
+        
+        sessionStorage.setItem('user', JSON.stringify(response));
       })
     );
   }
@@ -70,7 +75,35 @@ export class LoginService {
     }
   }
 
-  logout(): void {
-    sessionStorage.removeItem('jwtToken');
+  logout(): Observable<any> {
+    const token = sessionStorage.getItem('jwtToken');
+    if (!token) {
+      return throwError(() => new Error('No token found'));
+    }
+  
+    const logoutPayload = { token: token };
+    
+    return this.http.post(`${this.apiUrl}/api/auth/logout`, logoutPayload, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    }).pipe(
+      catchError(error => {
+        console.error('Logout error:', error);
+        return throwError(() => new Error('Logout failed'));
+      }),
+      tap(response => {
+        console.log('Logout successful:', response);
+        sessionStorage.removeItem('jwtToken'); // Remove token from session storage
+      })
+    );
+  }
+
+  isAdmin(): boolean {
+    const token = sessionStorage.getItem('jwtToken');
+    if (!token) return false;
+    const decoded = this.decodeToken(token);
+    console.log(decoded);
+    return decoded?.role === 'Admin';  
   }
 }

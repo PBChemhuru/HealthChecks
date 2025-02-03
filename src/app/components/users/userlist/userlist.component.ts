@@ -19,6 +19,7 @@ import { UserService } from '../../../services/user.service';
 import { AdduserdialogComponent } from '../adduserdialog/adduserdialog.component';
 import { EdituserdialogComponent } from '../edituserdialog/edituserdialog.component';
 import { DeleteuserdialogComponent } from '../deleteuserdialog/deleteuserdialog.component';
+import { LoginService } from '../../../services/login.service';
 
 @Component({
   selector: 'app-userlist',
@@ -58,7 +59,8 @@ export class UserlistComponent implements OnInit {
   constructor(
     private userservice: UserService,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    public loginService: LoginService
   ) {}
 
   ngOnInit(): void {

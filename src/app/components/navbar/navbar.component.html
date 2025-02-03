@@ -1,58 +1,37 @@
 <nav>
-    <div class="navbar">
-      <i class='bx bx-menu'></i>
-      <div class="logo" href="/"><app-logo></app-logo></div>
-      <div class="nav-links">
-        <ul class="links">
-          <li>
-            <a >Patients</a>
-            <i class='bx bxs-chevron-down htmlcss-arrow arrow  '></i>
-            <ul class="htmlCss-sub-menu sub-menu">
-              <li><a href="/add-patient">Add New Patient</a></li>
-              <li><a href="/patient-list">View Patient</a></li>         
-            </ul>
-          </li>
-          <li>
-            <a href="/recommendedCheck-list">Recomendations</a>
-          </li>
-          <li><a href="/user-list">Users</a></li>
-          <li><a href="#">Help Desk</a></li>
-        </ul>
+  <div class="navbar">
+    <i class="bx bx-menu"></i>
+    <div class="logo" href="/"><app-logo></app-logo></div>
+    <div class="nav-links">
+      <ul class="links">
+        <li>
+          <a>Patients</a>
+          <i class="bx bxs-chevron-down htmlcss-arrow arrow"></i>
+          <ul class="htmlCss-sub-menu sub-menu">
+            <li><a href="/add-patient">Add New Patient</a></li>
+            <li><a href="/patient-list">View Patient</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="/recommendedCheck-list">Recomendations</a>
+        </li>
+        <li *ngIf="Role === 'Admin'">
+          <a href="/user-list">Users</a>
+        </li>
+      </ul>
+    </div>
+    <div class="user-info">
+      <div class="greeting">
+        <span
+          >Hi,
+          <span class="user-name"
+            >{{ userFirstName }} {{ userSurname }}</span
+          ></span
+        >
       </div>
-      <div class="user-info">
-        <div class="greeting">
-            <span>Hi, <span class="user-name">John Doe</span></span>
-        </div>
-        <div class="logout">
-            <a ><i class="logout-icon">&#x1F6AA;</i> Log Out</a>
-        </div>
+      <div class="logout">
+        <a (click)="logout()"><i class="logout-icon">&#x1F6AA;</i> Log Out</a>
       </div>
     </div>
-  </nav>
-  <script src="script.js"></script>
-  <script>
-    let navbar = document.querySelector(".navbar");
-// sidebar open close js code
-let navLinks = document.querySelector(".nav-links");
-let menuOpenBtn = document.querySelector(".navbar .bx-menu");
-let menuCloseBtn = document.querySelector(".nav-links .bx-x");
-menuOpenBtn.onclick = function() {
-navLinks.style.left = "0";
-}
-menuCloseBtn.onclick = function() {
-navLinks.style.left = "-100%";
-}
-// sidebar submenu open close js code
-let htmlcssArrow = document.querySelector(".htmlcss-arrow");
-htmlcssArrow.onclick = function() {
- navLinks.classList.toggle("show1");
-}
-let moreArrow = document.querySelector(".more-arrow");
-moreArrow.onclick = function() {
- navLinks.classList.toggle("show2");
-}
-let jsArrow = document.querySelector(".js-arrow");
-jsArrow.onclick = function() {
- navLinks.classList.toggle("show3");
-}
-  </script>
+  </div>
+</nav>
