@@ -31,6 +31,13 @@ export class PatientchecksService {
     });
   }
 
+  getallpatientchecks():Observable<any> {
+    return this.http.get<PatientRecommendation[]>(`${this.apiUrl}/get_allPatientChecks/`, {
+      headers: this.getAuthHeaders(),
+
+  })
+}
+
   createpatientsCheck(newPatientsCheck: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/assignCheck`, newPatientsCheck, {
       headers: this.getAuthHeaders(),

@@ -111,7 +111,8 @@ export class PatientdetailsComponent implements OnInit {
     } else {
       this.filteredChecks = this.patientsChecks;
     }
-  
+    
+    this.filteredChecks.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
  
     this.checks.clear();
   
