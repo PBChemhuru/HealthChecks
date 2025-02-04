@@ -8,17 +8,16 @@ export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state) =
 
   const currentUser = loginService.isAuthenticated();
 
-  if (state.url === '/user-list' && !loginService.isAdmin()) {
-    
-    router.navigate(['/home']);
+  if (!currentUser) {
+    console.warn('Access denied - User not logged in');
+    router.navigate(['']); 
     return false;
   }
-  else{
-    
-  }
 
-  if (!currentUser) {
-    router.navigate(['']);
+  
+  if (state.url === '/user-list' && !loginService.isAdmin()) {
+    console.warn('Access denied - Not an admin');
+    router.navigate(['/home']); 
     return false;
   }
 

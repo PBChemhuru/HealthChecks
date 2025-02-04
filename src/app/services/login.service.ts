@@ -36,7 +36,6 @@ export class LoginService {
       }),
       tap(response =>{
         console.log(response);
-        
         sessionStorage.setItem('user', JSON.stringify(response));
       })
     );
@@ -102,8 +101,12 @@ export class LoginService {
   isAdmin(): boolean {
     const token = sessionStorage.getItem('jwtToken');
     if (!token) return false;
+  
     const decoded = this.decodeToken(token);
-    console.log(decoded);
-    return decoded?.role === 'Admin';  
+    console.log('Decoded Token:', decoded);
+  
+    const role = decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+    
+    return role === 'Admin';
   }
 }
