@@ -24,7 +24,6 @@ export class NavbarComponent {
 
   ngOnInit(): void {
     this.loadUserFromToken();
-    console.log(this.loginService.isAdmin());
   }
 
   navigateToHome() {

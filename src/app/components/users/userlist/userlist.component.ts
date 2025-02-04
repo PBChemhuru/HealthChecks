@@ -75,7 +75,6 @@ export class UserlistComponent implements OnInit {
     this.userservice.getUsers().subscribe({
       next: (data) => {
         this.users.data = data;
-        console.log(this.users.data);
       },
       error: (error) => {
         this.snackBar.open('Failed to load recommended checks', 'Close', {

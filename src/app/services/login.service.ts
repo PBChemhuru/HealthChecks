@@ -103,7 +103,6 @@ export class LoginService {
     if (!token) return false;
   
     const decoded = this.decodeToken(token);
-    console.log('Decoded Token:', decoded);
   
     const role = decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
     
